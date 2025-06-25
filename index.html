@@ -157,19 +157,38 @@
   border-radius: 0.5em;
   text-align: right;
   }
+  
+  .short-input {
+    width: 340px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .page-footer {
+  width: 100%;
+  text-align: center;
+  font-size: 0.85em;
+  color: #888;
+  margin-top: 3em;
+  padding: 1em 0;
+  border-top: 1px dashed #ccc;
+  box-sizing: border-box;
+  clear: both; /* 避免浮动影响 */
+}
 
   </style>
-</head>
-<body><header class="page-header">
-  <h1>計算ゼロ！ 🌐</h1>
-  <p>無料＆スマート計算。作業効率UPツール</p>
-</header>
+  </head>
+  <body>
+    <header class="page-header">
+      <h1>計算ゼロ！ 🌐</h1>
+      <p>無料＆スマート計算。作業効率UPツール</p>
+    </header>
 
 
   <!-- 🔘 顶部导航 -->
   <div class="nav">
-    <button class="tab-button active" onclick="switchTab(0)">消費税計算機</button>
-    <button class="tab-button" onclick="switchTab(1)">タブ2（準備中）</button>
+    <button class="tab-button active" onclick="switchTab(0)">消費税計算</button>
+    <button class="tab-button" onclick="switchTab(1)">BMI 計算</button>
     <button class="tab-button" onclick="switchTab(2)">タブ3（準備中）</button>
   </div>
 
@@ -184,10 +203,12 @@
   <option value="include">税込で入力</option>
 </select>
 
+    <div class="form-row">
       <label for="amount">金額（円）</label>
-      <input type="number" id="amount" placeholder="例：1200">
+      <input type="number" id="amount" class="short-input" placeholder="例：1000">
+    </div>
 
-      <label for="taxRate">消費税率</label>
+      <label for="taxRate">税率</label>
       <select id="taxRate">
         <option value="0.10">10%</option>
         <option value="0.08">8%</option>
@@ -215,24 +236,18 @@
 
   <!-- 🕓 Tab2内容（空） -->
   <div class="content" id="tab2">
-<div class="receipt" style="border-radius: 1em; border: 2px solid #aaa; background: #fefefe;">
-  <h2>🏋️ BMI計算機</h2>
+    <div class="receipt" style="border-radius: 1em; border: 2px solid #aaa; background: #fefefe;">
+      <h2>🏋️ BMI計算</h2>
+      <label for="height">身長（cm）</label>
+      <input type="number" id="height" placeholder="例：160">
+      <label for="weight">体重（kg）</label>
+      <input type="number" id="weight" placeholder="例：50">
+      <button class="calc" onclick="calculateBMI()">▶ 計算する</button>
+      <div id="bmiResult" style="margin-top:1.5em; text-align: center;"></div>
+    </div>
+  </div> <!-- 这里结束 tab2 -->
 
-  <label for="height">身長（cm）</label>
-  <input type="number" id="height" placeholder="例：160">
-
-  <label for="weight">体重（kg）</label>
-  <input type="number" id="weight" placeholder="例：50">
-
-  <button class="calc" onclick="calculateBMI()">▶ 計算する</button>
-
-  <div id="bmiResult" style="margin-top:1.5em; text-align: center;">
-    <!-- BMI 結果表示 -->
-  </div>
-</div>
-
-
-  <!-- 🕓 Tab3内容（空） -->
+  <!-- Tab3 -->
   <div class="content" id="tab3">
     <div class="receipt">
       <h2>📦 コンテンツ準備中</h2>
@@ -240,26 +255,45 @@
     </div>
   </div>
 
+  <!-- 页尾 -->
+  <footer class="page-footer">
+    2025 計算ゼロ | All rights reserved.
+  </footer>
+
 
   <!-- 📜 JavaScript -->
   <script>
     function calculate() {
       const amount = parseFloat(document.getElementById("amount").value);
       const rate = parseFloat(document.getElementById("taxRate").value);
+      const mode = document.getElementById("modeSelect").value;
+      
       if (isNaN(amount)) {
         document.getElementById("result").innerHTML = "<p>※ 金額を正しく入力してください</p>";
         return;
       }
 
-      const tax = amount * rate;
-      const total = amount + tax;
+      let beforeTax, tax, afterTax;
+
+      if (mode === "exclude") {
+        // 税抜で入力 → 税を足す
+        beforeTax = amount;
+        tax = amount * rate;
+        afterTax = amount + tax;
+      } else {
+        // 税込で入力 → 税を引く
+        afterTax = amount;
+        beforeTax = amount / (1 + rate);
+        tax = afterTax - beforeTax;
+      }
 
       document.getElementById("result").innerHTML = `
-        <div class="line"><span>税抜金額</span><span>￥${amount.toFixed(2)}</span></div>
-        <div class="line"><span>消費税（${(rate*100).toFixed(0)}%）</span><span>￥${tax.toFixed(2)}</span></div>
-        <div class="line"><strong>合計金額</strong><strong>￥${total.toFixed(2)}</strong></div>
+        <div class="line"><span>税抜金額</span><span>￥${beforeTax.toFixed(2)}</span></div>
+        <div class="line"><span>消費税（${(rate * 100).toFixed(0)}%）</span><span>￥${tax.toFixed(2)}</span></div>
+        <div class="line"><strong>税込金額</strong><strong>￥${afterTax.toFixed(2)}</strong></div>
       `;
     }
+
 
     function switchTab(index) {
       const tabs = document.querySelectorAll('.content');
