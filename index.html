@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>日本の消費税計算機</title>
+</head>
+<body>
+<h2>日本の消費税計算機</h2>
+
+<label>金額を入力してください：</label>
+<input type="number" id="amount" step="0.01" min="0" /><br /><br />
+
+<label>消費税率を選択：</label>
+<select id="taxRate">
+  <option value="0.10">10%</option>
+  <option value="0.08">8%</option>
+</select><br /><br />
+
+<label>計算タイプ：</label>
+<select id="calcType">
+  <option value="exclude">税抜価格から計算（税額・税込価格を表示）</option>
+  <option value="include">税込価格から計算（税抜価格・税額を表示）</option>
+</select><br /><br />
+
+<button onclick="calculateTax()">計算する</button>
+
+<h3 id="result"></h3>
+
+<script>
+function calculateTax() {
+  const amount = parseFloat(document.getElementById("amount").value);
+  const taxRate = parseFloat(document.getElementById("taxRate").value);
+  const calcType = document.getElementById("calcType").value;
+
+  if (isNaN(amount) || amount < 0) {
+    document.getElementById("result").innerText = "有効な金額を入力してください。";
+    return;
+  }
+
+  let tax = 0;
+  let priceExclTax = 0;
+  let priceInclTax = 0;
+
+  if (calcType === "exclude") {
+    tax = amount * taxRate;
+    priceExclTax = amount;
+    priceInclTax = amount + tax;
+  } else {
+    priceInclTax = amount;
+    priceExclTax = amount / (1 + taxRate);
+    tax = priceInclTax - priceExclTax;
+  }
+
+  document.getElementById("result").innerHTML = 
+    `税抜価格：${priceExclTax.toFixed(2)} 円<br>` +
+    `消費税額：${tax.toFixed(2)} 円<br>` +
+    `税込価格：${priceInclTax.toFixed(2)} 円`;
+}
+</script>
+
+</body>
+</html>
