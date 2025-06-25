@@ -1,62 +1,307 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
-<title>日本の消費税計算機</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>計算ゼロ！</title>
+  <style>
+    body {
+      background-color: #fdfdfd;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      background-color: #eee;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .nav button {
+      flex: 1;
+      padding: 1em;
+      border: none;
+      background: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav button.active {
+      border-bottom: 2px solid #333;
+      background-color: #fff;
+    }
+
+    .content {
+      display: none;
+      padding: 2em;
+      display: none;
+      justify-content: center;
+    }
+
+    .content.active {
+      display: flex;
+    }
+
+    .receipt {
+      width: 360px;
+      background-color: #fff;
+      padding: 2em;
+      border: 1px dashed #ccc;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      text-align: center;
+      border-bottom: 1px dashed #999;
+      padding-bottom: 0.5em;
+      margin-bottom: 1em;
+      font-size: 1.4em;
+    }
+
+    label {
+      display: block;
+      margin-top: 1em;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.5em;
+      font-family: inherit;
+      font-size: 1em;
+      border: 1px solid #bbb;
+      margin-top: 0.3em;
+      background-color: #fefefe;
+    }
+
+    button.calc {
+      margin-top: 1.5em;
+      width: 100%;
+      padding: 0.6em;
+      background-color: #ffffff;
+      border: 1px solid #555;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .line {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4em 0;
+      border-bottom: 1px dotted #ccc;
+    }
+
+    .result-area {
+      margin-top: 1.5em;
+    }
+
+    .ad-box {
+      margin-top: 2em;
+      border-top: 1px dashed #ccc;
+      padding-top: 1em;
+    }
+
+    .ad-box h3 {
+      font-size: 1em;
+      margin-bottom: 0.5em;
+    }
+
+    .link-list {
+      list-style: none;
+      padding-left: 0;
+      font-size: 0.9em;
+    }
+
+    .link-list li {
+      margin: 0.4em 0;
+    }
+
+    .link-list a {
+      text-decoration: none;
+      color: #0066cc;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8em;
+      padding: 1em;
+      color: #aaa;
+    }
+
+     .page-header {
+    text-align: center;  /* 居中对齐 */
+    padding: 1.5em 1em 1em;
+    background-color: #f4f4f4;
+    border-bottom: 1px dashed #bbb;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .page-header h1 {
+    margin: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  .page-header p {
+    margin: 0.5em 0 0;
+    font-size: 0.9em;
+    color: #666;
+  }
+
+  input {
+  border-radius: 0.5em;
+  text-align: right;
+  }
+
+  </style>
 </head>
-<body>
-<h2>日本の消費税計算機</h2>
+<body><header class="page-header">
+  <h1>計算ゼロ！ 🌐</h1>
+  <p>無料＆スマート計算。作業効率UPツール</p>
+</header>
 
-<label>金額を入力してください：</label>
-<input type="number" id="amount" step="0.01" min="0" /><br /><br />
 
-<label>消費税率を選択：</label>
-<select id="taxRate">
-  <option value="0.10">10%</option>
-  <option value="0.08">8%</option>
-</select><br /><br />
+  <!-- 🔘 顶部导航 -->
+  <div class="nav">
+    <button class="tab-button active" onclick="switchTab(0)">消費税計算機</button>
+    <button class="tab-button" onclick="switchTab(1)">タブ2（準備中）</button>
+    <button class="tab-button" onclick="switchTab(2)">タブ3（準備中）</button>
+  </div>
 
-<label>計算タイプ：</label>
-<select id="calcType">
-  <option value="exclude">税抜価格から計算（税額・税込価格を表示）</option>
-  <option value="include">税込価格から計算（税抜価格・税額を表示）</option>
-</select><br /><br />
+  <!-- ✅ Tab1：消費税計算ツール -->
+  <div class="content active" id="tab1">
+    <div class="receipt">
+      <h2>🧾 消費税計算レシート</h2>
 
-<button onclick="calculateTax()">計算する</button>
+      <label for="modeSelect">入力モード</label>
+<select id="modeSelect">
+  <option value="exclude">税抜で入力</option>
+  <option value="include">税込で入力</option>
+</select>
 
-<h3 id="result"></h3>
+      <label for="amount">金額（円）</label>
+      <input type="number" id="amount" placeholder="例：1200">
 
-<script>
-function calculateTax() {
-  const amount = parseFloat(document.getElementById("amount").value);
-  const taxRate = parseFloat(document.getElementById("taxRate").value);
-  const calcType = document.getElementById("calcType").value;
+      <label for="taxRate">消費税率</label>
+      <select id="taxRate">
+        <option value="0.10">10%</option>
+        <option value="0.08">8%</option>
+        <option value="0.05">5%</option>
+        <option value="0.03">3%</option>
+      </select>
 
-  if (isNaN(amount) || amount < 0) {
-    document.getElementById("result").innerText = "有効な金額を入力してください。";
+      <button class="calc" onclick="calculate()">▶ 計算する</button>
+
+      <div class="result-area" id="result">
+        <!-- ここに結果が表示されます -->
+      </div>
+
+      <!-- 🔗 友情链接代替广告位 -->
+      <div class="ad-box">
+        <h3>🔗 関連リンク</h3>
+        <ul class="link-list">
+          <li><a href="https://www.nta.go.jp/" target="_blank">🛍️ 消費税のしくみ（国税庁）</a></li>
+          <li><a href="#">💼 小規模事業者の節税Tips</a></li>
+          <li><a href="#">📊 税金の早見表ツール</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🕓 Tab2内容（空） -->
+  <div class="content" id="tab2">
+<div class="receipt" style="border-radius: 1em; border: 2px solid #aaa; background: #fefefe;">
+  <h2>🏋️ BMI計算機</h2>
+
+  <label for="height">身長（cm）</label>
+  <input type="number" id="height" placeholder="例：160">
+
+  <label for="weight">体重（kg）</label>
+  <input type="number" id="weight" placeholder="例：50">
+
+  <button class="calc" onclick="calculateBMI()">▶ 計算する</button>
+
+  <div id="bmiResult" style="margin-top:1.5em; text-align: center;">
+    <!-- BMI 結果表示 -->
+  </div>
+</div>
+
+
+  <!-- 🕓 Tab3内容（空） -->
+  <div class="content" id="tab3">
+    <div class="receipt">
+      <h2>📦 コンテンツ準備中</h2>
+      <p style="text-align:center;">しばらくお待ちください...</p>
+    </div>
+  </div>
+
+
+  <!-- 📜 JavaScript -->
+  <script>
+    function calculate() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      const rate = parseFloat(document.getElementById("taxRate").value);
+      if (isNaN(amount)) {
+        document.getElementById("result").innerHTML = "<p>※ 金額を正しく入力してください</p>";
+        return;
+      }
+
+      const tax = amount * rate;
+      const total = amount + tax;
+
+      document.getElementById("result").innerHTML = `
+        <div class="line"><span>税抜金額</span><span>￥${amount.toFixed(2)}</span></div>
+        <div class="line"><span>消費税（${(rate*100).toFixed(0)}%）</span><span>￥${tax.toFixed(2)}</span></div>
+        <div class="line"><strong>合計金額</strong><strong>￥${total.toFixed(2)}</strong></div>
+      `;
+    }
+
+    function switchTab(index) {
+      const tabs = document.querySelectorAll('.content');
+      const buttons = document.querySelectorAll('.tab-button');
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle('active', i === index);
+        buttons[i].classList.toggle('active', i === index);
+      });
+    }
+
+    function calculateBMI() {
+  const height = parseFloat(document.getElementById("height").value);
+  const weight = parseFloat(document.getElementById("weight").value);
+  const resultEl = document.getElementById("bmiResult");
+
+  if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+    resultEl.innerHTML = "<p>※ 有効な数値を入力してください</p>";
     return;
   }
 
-  let tax = 0;
-  let priceExclTax = 0;
-  let priceInclTax = 0;
+  const heightM = height / 100;
+  const bmi = weight / (heightM * heightM);
+  let status = "";
 
-  if (calcType === "exclude") {
-    tax = amount * taxRate;
-    priceExclTax = amount;
-    priceInclTax = amount + tax;
+  if (bmi < 18.5) {
+    status = "低体重（やせ型）";
+  } else if (bmi < 25) {
+    status = "普通体重";
+  } else if (bmi < 30) {
+    status = "肥満（1度）";
   } else {
-    priceInclTax = amount;
-    priceExclTax = amount / (1 + taxRate);
-    tax = priceInclTax - priceExclTax;
+    status = "高度肥満";
   }
 
-  document.getElementById("result").innerHTML = 
-    `税抜価格：${priceExclTax.toFixed(2)} 円<br>` +
-    `消費税額：${tax.toFixed(2)} 円<br>` +
-    `税込価格：${priceInclTax.toFixed(2)} 円`;
+  resultEl.innerHTML = `
+    <div style="border: 2px inset #666; border-radius: 0.5em; padding: 1em; display:inline-block; background:#f8f8f8; font-size:1.2em; margin-top:1em;">
+      <div><strong>BMI：</strong>${bmi.toFixed(1)}</div>
+      <div>${status}</div>
+    </div>
+  `;
 }
-</script>
 
+  </script>
 </body>
 </html>
