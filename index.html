@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>計算ゼロ！</title>
+  <title>ゼロツール | 無料で使えるオンライン計算ツール – 消費税計算、BMI計算</title>
+  <meta name="description" content="ゼロツールは、無料で使えるオンライン計算ツール集です。消費税やBMIの計算など、日常やビジネスで役立つシンプルなツールをすぐにご利用いただけます。">
   <style>
     body {
       background-color: #fdfdfd;
@@ -174,7 +175,64 @@
   border-top: 1px dashed #ccc;
   box-sizing: border-box;
   clear: both; /* 避免浮动影响 */
-}
+  }
+
+    /* 新增：邮件订阅区域样式 */
+  .newsletter-section {
+    margin-top: 3em; /* 顶部留出一些空间 */
+    margin-bottom: 2em; /* 底部也留出一些空间，与页脚隔开 */
+    display: flex;
+    justify-content: center; /* 使订阅框在页面中心 */
+  }
+
+  .newsletter-receipt {
+    width: 360px; /* 保持与计算器相同的宽度 */
+    text-align: center; /* 内部文本居中 */
+  }
+
+  .newsletter-receipt h2 {
+    font-size: 1.2em; /* 调整标题大小 */
+    margin-bottom: 1em;
+    border-bottom: 1px dashed #999;
+    padding-bottom: 0.5em;
+  }
+
+  .newsletter-receipt p {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 1.5em;
+  }
+
+  .newsletter-receipt input[type="email"] {
+    width: calc(100% - 2em); /* 减去padding */
+    padding: 0.8em 1em;
+    margin-bottom: 1em;
+    border-radius: 0.5em;
+    border: 1px solid #bbb;
+    text-align: left; /* 邮箱输入框靠左对齐 */
+  }
+
+  .newsletter-receipt button[type="submit"] {
+    width: 100%;
+    padding: 0.8em;
+    background-color: #f0f0f0; /* 按钮背景色 */
+    border: 1px solid #555;
+    border-radius: 0.5em;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.3s ease; /* 鼠标悬停效果 */
+  }
+
+  .newsletter-receipt button[type="submit"]:hover {
+    background-color: #e0e0e0;
+  }
+
+  .signup-message {
+    margin-top: 1em;
+    font-size: 0.9em;
+    font-weight: bold;
+  }
 
   </style>
   </head>
@@ -227,8 +285,6 @@
         <h3>🔗 関連リンク</h3>
         <ul class="link-list">
           <li><a href="https://www.nta.go.jp/" target="_blank">🛍️ 消費税のしくみ（国税庁）</a></li>
-          <li><a href="#">💼 小規模事業者の節税Tips</a></li>
-          <li><a href="#">📊 税金の早見表ツール</a></li>
         </ul>
       </div>
     </div>
@@ -253,6 +309,18 @@
       <h2>📦 コンテンツ準備中</h2>
       <p style="text-align:center;">しばらくお待ちください...</p>
     </div>
+  </div>
+
+  <div class="newsletter-section">
+      <div class="receipt newsletter-receipt">
+          <h2>💌 更新情報を受け取る</h2>
+          <p>新しいツールやサイトの改善情報をお届けします。</p>
+          <form id="newsletterForm" action="https://formspree.io/f/https://formspree.io/f/xvgrlnkq" method="POST">
+              <input type="email" id="emailInput" name="_replyto" placeholder="メールアドレスを入力してください" required>
+              <button type="submit">購読する</button>
+              <input type="text" name="_gotcha" style="display:none" /> </form>
+          <p id="signupMessage" class="signup-message" style="display: none;"></p>
+      </div>
   </div>
 
   <!-- 页尾 -->
@@ -334,7 +402,65 @@
       <div>${status}</div>
     </div>
   `;
-}
+  }
+
+  // 新增：邮件订阅表单处理逻辑
+  document.addEventListener('DOMContentLoaded', function() {
+      const newsletterForm = document.getElementById('newsletterForm');
+      const signupMessage = document.getElementById('signupMessage');
+
+      if (newsletterForm) { // 确保元素存在
+          newsletterForm.addEventListener('submit', async function(event) {
+              // 注意：当使用 Formspree 的 action 属性时，浏览器会直接提交表单
+              // 如果要用 JS 处理并显示反馈，需要阻止默认行为并使用 fetch
+              event.preventDefault(); // 阻止表单默认提交，我们用 JS 来处理
+
+              const emailInput = document.getElementById('emailInput');
+              const email = emailInput.value;
+
+              // Formspree 的推荐用法是直接在 form action 中指定 URL
+              // 但如果我们需要即时反馈，可以使用 JS fetch API
+              // 确保你的 Formspree 表单是 AJAX 模式，或者处理 Formspree 的重定向。
+              // 简单起见，我们直接模拟 Formspree 的提交，并假定成功。
+              // 实际生产中，你需要根据 Formspree 的文档来处理响应。
+
+              // 这里只是一个简单的模拟成功/失败反馈，实际上你需要与 Formspree 的响应结合
+              // 对于 Formspree，通常它会重定向到一个成功页面，或者在 AJAX 提交时返回 JSON。
+              // 最简单的 Formspree 使用方式是不阻止默认提交，让它重定向。
+              // 如果你希望页面不跳转而显示消息，你需要将 Formspree 的 action URL 改为其 AJAX Endpoint。
+              // 参考 Formspree 文档：https://formspree.io/forms/f/your-form-hash/documentation#section-ajax-requests
+
+              try {
+                  const response = await fetch(newsletterForm.action, {
+                      method: 'POST',
+                      headers: {
+                          'Accept': 'application/json' // 告知 Formspree 我们期望 JSON 响应
+                      },
+                      body: new FormData(newsletterForm) // 使用 FormData 可以方便地获取所有表单字段
+                  });
+
+                  if (response.ok) {
+                      signupMessage.textContent = '購読ありがとうございます！最新情報をお届けします。'; // 订阅成功信息
+                      signupMessage.style.color = 'green';
+                      emailInput.value = ''; // 清空输入框
+                  } else {
+                      const data = await response.json();
+                      if (data && data.errors) {
+                          signupMessage.textContent = '購読に失敗しました: ' + data.errors.map(err => err.message).join(', ');
+                      } else {
+                          signupMessage.textContent = '購読に失敗しました。もう一度お試しください。';
+                      }
+                      signupMessage.style.color = 'red';
+                  }
+              } catch (error) {
+                  console.error('Error submitting form:', error);
+                  signupMessage.textContent = 'エラーが発生しました。インターネット接続を確認してください。';
+                  signupMessage.style.color = 'red';
+              }
+              signupMessage.style.display = 'block'; // 显示消息
+          });
+      }
+  });
 
   </script>
 </body>
