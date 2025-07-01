@@ -133,8 +133,8 @@
       color: #aaa;
     }
 
-     .page-header {
-    text-align: center;  /* 居中对齐 */
+      .page-header {
+    text-align: center; 
     padding: 1.5em 1em 1em;
     background-color: #f4f4f4;
     border-bottom: 1px dashed #bbb;
@@ -155,8 +155,8 @@
   }
 
   input {
-  border-radius: 0.5em;
-  text-align: right;
+    border-radius: 0.5em;
+    text-align: right;
   }
   
   .short-input {
@@ -166,15 +166,15 @@
   }
 
   .page-footer {
-  width: 100%;
-  text-align: center;
-  font-size: 0.85em;
-  color: #888;
-  margin-top: 3em;
-  padding: 1em 0;
-  border-top: 1px dashed #ccc;
-  box-sizing: border-box;
-  clear: both; /* 避免浮动影响 */
+    width: 100%;
+    text-align: center;
+    font-size: 0.85em;
+    color: #888;
+    margin-top: 3em;
+    padding: 1em 0;
+    border-top: 1px dashed #ccc;
+    box-sizing: border-box;
+    clear: both; /* 避免浮动影响 */
   }
 
     /* 新增：邮件订阅区域样式 */
@@ -235,36 +235,33 @@
   }
 
   </style>
-  </head>
-  <body>
-    <header class="page-header">
-      <h1>計算ゼロ！ 🌐</h1>
-      <p>無料＆スマート計算。作業効率UPツール</p>
-    </header>
+</head>
+<body>
+  <header class="page-header">
+    <h1>計算ゼロ！ 🌐</h1>
+    <p>無料＆スマート計算。作業効率アップツール</p>
+  </header>
 
-
-  <!-- 🔘 顶部导航 -->
   <div class="nav">
     <button class="tab-button active" onclick="switchTab(0)">消費税計算</button>
     <button class="tab-button" onclick="switchTab(1)">BMI 計算</button>
     <button class="tab-button" onclick="switchTab(2)">タブ3（準備中）</button>
   </div>
 
-  <!-- ✅ Tab1：消費税計算ツール -->
   <div class="content active" id="tab1">
     <div class="receipt">
       <h2>🧾 消費税計算レシート</h2>
 
       <label for="modeSelect">入力モード</label>
-<select id="modeSelect">
-  <option value="exclude">税抜で入力</option>
-  <option value="include">税込で入力</option>
-</select>
+      <select id="modeSelect">
+        <option value="exclude">税抜きで入力</option>
+        <option value="include">税込みで入力</option>
+      </select>
 
-    <div class="form-row">
-      <label for="amount">金額（円）</label>
-      <input type="number" id="amount" class="short-input" placeholder="例：1000">
-    </div>
+      <div class="form-row">
+        <label for="amount">金額（円）</label>
+        <input type="number" id="amount" class="short-input" placeholder="例：1000">
+      </div>
 
       <label for="taxRate">税率</label>
       <select id="taxRate">
@@ -277,10 +274,8 @@
       <button class="calc" onclick="calculate()">▶ 計算する</button>
 
       <div class="result-area" id="result">
-        <!-- ここに結果が表示されます -->
-      </div>
+        </div>
 
-      <!-- 🔗 友情链接代替广告位 -->
       <div class="ad-box">
         <h3>🔗 関連リンク</h3>
         <ul class="link-list">
@@ -290,7 +285,6 @@
     </div>
   </div>
 
-  <!-- 🕓 Tab2内容（空） -->
   <div class="content" id="tab2">
     <div class="receipt" style="border-radius: 1em; border: 2px solid #aaa; background: #fefefe;">
       <h2>🏋️ BMI計算</h2>
@@ -301,9 +295,8 @@
       <button class="calc" onclick="calculateBMI()">▶ 計算する</button>
       <div id="bmiResult" style="margin-top:1.5em; text-align: center;"></div>
     </div>
-  </div> <!-- 这里结束 tab2 -->
+  </div>
 
-  <!-- Tab3 -->
   <div class="content" id="tab3">
     <div class="receipt">
       <h2>📦 コンテンツ準備中</h2>
@@ -312,30 +305,28 @@
   </div>
 
   <div class="newsletter-section">
-      <div class="receipt newsletter-receipt">
-          <h2>💌 更新情報を受け取る</h2>
-          <p>新しいツールやサイトの改善情報をお届けします。</p>
-          <form id="newsletterForm" action="https://formspree.io/f/https://formspree.io/f/xvgrlnkq" method="POST">
-              <input type="email" id="emailInput" name="_replyto" placeholder="メールアドレスを入力してください" required>
-              <button type="submit">購読する</button>
-              <input type="text" name="_gotcha" style="display:none" /> </form>
-          <p id="signupMessage" class="signup-message" style="display: none;"></p>
-      </div>
+    <div class="receipt newsletter-receipt">
+      <h2>💌 更新情報を受け取る</h2>
+      <p>新しいツールやサイトの改善情報をお届けします。</p>
+      <form id="newsletterForm" action="https://formspree.io/f/xvgrlnkq" method="POST">
+        <input type="email" id="emailInput" name="_replyto" placeholder="メールアドレスを入力してください" required>
+        <button type="submit">購読する</button>
+        <input type="text" name="_gotcha" style="display:none" />
+      </form>
+      <p id="signupMessage" class="signup-message" style="display: none;"></p>
+    </div>
   </div>
 
-  <!-- 页尾 -->
   <footer class="page-footer">
     2025 計算ゼロ | All rights reserved.
   </footer>
 
-
-  <!-- 📜 JavaScript -->
   <script>
     function calculate() {
       const amount = parseFloat(document.getElementById("amount").value);
       const rate = parseFloat(document.getElementById("taxRate").value);
       const mode = document.getElementById("modeSelect").value;
-      
+
       if (isNaN(amount)) {
         document.getElementById("result").innerHTML = "<p>※ 金額を正しく入力してください</p>";
         return;
@@ -344,24 +335,23 @@
       let beforeTax, tax, afterTax;
 
       if (mode === "exclude") {
-        // 税抜で入力 → 税を足す
+        // 税抜きで入力 → 税を足す
         beforeTax = amount;
         tax = amount * rate;
         afterTax = amount + tax;
       } else {
-        // 税込で入力 → 税を引く
+        // 税込みで入力 → 税を引く
         afterTax = amount;
         beforeTax = amount / (1 + rate);
         tax = afterTax - beforeTax;
       }
 
       document.getElementById("result").innerHTML = `
-        <div class="line"><span>税抜金額</span><span>￥${beforeTax.toFixed(2)}</span></div>
+        <div class="line"><span>税抜き金額</span><span>￥${beforeTax.toFixed(2)}</span></div>
         <div class="line"><span>消費税（${(rate * 100).toFixed(0)}%）</span><span>￥${tax.toFixed(2)}</span></div>
-        <div class="line"><strong>税込金額</strong><strong>￥${afterTax.toFixed(2)}</strong></div>
+        <div class="line"><strong>税込み金額</strong><strong>￥${afterTax.toFixed(2)}</strong></div>
       `;
     }
-
 
     function switchTab(index) {
       const tabs = document.querySelectorAll('.content');
@@ -373,94 +363,80 @@
     }
 
     function calculateBMI() {
-  const height = parseFloat(document.getElementById("height").value);
-  const weight = parseFloat(document.getElementById("weight").value);
-  const resultEl = document.getElementById("bmiResult");
+      const height = parseFloat(document.getElementById("height").value);
+      const weight = parseFloat(document.getElementById("weight").value);
+      const resultEl = document.getElementById("bmiResult");
 
-  if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
-    resultEl.innerHTML = "<p>※ 有効な数値を入力してください</p>";
-    return;
-  }
+      if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+        resultEl.innerHTML = "<p>※ 有効な数値を入力してください</p>";
+        return;
+      }
 
-  const heightM = height / 100;
-  const bmi = weight / (heightM * heightM);
-  let status = "";
+      const heightM = height / 100;
+      const bmi = weight / (heightM * heightM);
+      let status = "";
 
-  if (bmi < 18.5) {
-    status = "低体重（やせ型）";
-  } else if (bmi < 25) {
-    status = "普通体重";
-  } else if (bmi < 30) {
-    status = "肥満（1度）";
-  } else {
-    status = "高度肥満";
-  }
+      if (bmi < 18.5) {
+        status = "低体重（やせ型）";
+      } else if (bmi < 25) {
+        status = "普通体重";
+      } else if (bmi < 30) {
+        status = "肥満（1度）";
+      } else {
+        status = "高度肥満";
+      }
 
-  resultEl.innerHTML = `
-    <div style="border: 2px inset #666; border-radius: 0.5em; padding: 1em; display:inline-block; background:#f8f8f8; font-size:1.2em; margin-top:1em;">
-      <div><strong>BMI：</strong>${bmi.toFixed(1)}</div>
-      <div>${status}</div>
-    </div>
-  `;
-  }
+      resultEl.innerHTML = `
+        <div style="border: 2px inset #666; border-radius: 0.5em; padding: 1em; display:inline-block; background:#f8f8f8; font-size:1.2em; margin-top:1em;">
+          <div><strong>BMI：</strong>${bmi.toFixed(1)}</div>
+          <div>${status}</div>
+        </div>
+      `;
+    }
 
-  // 新增：邮件订阅表单处理逻辑
-  document.addEventListener('DOMContentLoaded', function() {
+    // 新增：邮件订阅表单处理逻辑
+    document.addEventListener('DOMContentLoaded', function() {
       const newsletterForm = document.getElementById('newsletterForm');
       const signupMessage = document.getElementById('signupMessage');
 
-      if (newsletterForm) { // 确保元素存在
-          newsletterForm.addEventListener('submit', async function(event) {
-              // 注意：当使用 Formspree 的 action 属性时，浏览器会直接提交表单
-              // 如果要用 JS 处理并显示反馈，需要阻止默认行为并使用 fetch
-              event.preventDefault(); // 阻止表单默认提交，我们用 JS 来处理
+      if (newsletterForm) {
+        newsletterForm.addEventListener('submit', async function(event) {
+          event.preventDefault();
 
-              const emailInput = document.getElementById('emailInput');
-              const email = emailInput.value;
+          const emailInput = document.getElementById('emailInput');
+          const email = emailInput.value;
 
-              // Formspree 的推荐用法是直接在 form action 中指定 URL
-              // 但如果我们需要即时反馈，可以使用 JS fetch API
-              // 确保你的 Formspree 表单是 AJAX 模式，或者处理 Formspree 的重定向。
-              // 简单起见，我们直接模拟 Formspree 的提交，并假定成功。
-              // 实际生产中，你需要根据 Formspree 的文档来处理响应。
+          try {
+            const response = await fetch(newsletterForm.action, {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json'
+              },
+              body: new FormData(newsletterForm)
+            });
 
-              // 这里只是一个简单的模拟成功/失败反馈，实际上你需要与 Formspree 的响应结合
-              // 对于 Formspree，通常它会重定向到一个成功页面，或者在 AJAX 提交时返回 JSON。
-              // 最简单的 Formspree 使用方式是不阻止默认提交，让它重定向。
-              // 如果你希望页面不跳转而显示消息，你需要将 Formspree 的 action URL 改为其 AJAX Endpoint。
-              // 参考 Formspree 文档：https://formspree.io/forms/f/your-form-hash/documentation#section-ajax-requests
-
-              try {
-                  const response = await fetch(newsletterForm.action, {
-                      method: 'POST',
-                      headers: {
-                          'Accept': 'application/json' // 告知 Formspree 我们期望 JSON 响应
-                      },
-                      body: new FormData(newsletterForm) // 使用 FormData 可以方便地获取所有表单字段
-                  });
-
-                  if (response.ok) {
-                      signupMessage.textContent = '購読ありがとうございます！最新情報をお届けします。'; // 订阅成功信息
-                      signupMessage.style.color = 'green';
-                      emailInput.value = ''; // 清空输入框
-                  } else {
-                      const data = await response.json();
-                      if (data && data.errors) {
-                          signupMessage.textContent = '購読に失敗しました: ' + data.errors.map(err => err.message).join(', ');
-                      } else {
-                          signupMessage.textContent = '購読に失敗しました。もう一度お試しください。';
-                      }
-                      signupMessage.style.color = 'red';
-                  }
-              } catch (error) {
-                  console.error('Error submitting form:', error);
-                  signupMessage.textContent = 'エラーが発生しました。インターネット接続を確認してください。';
-                  signupMessage.style.color = 'red';
+            if (response.ok) {
+              signupMessage.textContent = '購読ありがとうございます！最新情報をお届けします。';
+              signupMessage.style.color = 'green';
+              emailInput.value = '';
+            } else {
+              const data = await response.json();
+              if (data && data.errors) {
+                signupMessage.textContent = '購読に失敗しました: ' + data.errors.map(err => err.message).join(', ');
+              } else {
+                signupMessage.textContent = '購読に失敗しました。もう一度お試しください。';
               }
-              signupMessage.style.display = 'block'; // 显示消息
-          });
+              signupMessage.style.color = 'red';
+            }
+          } catch (error) {
+            console.error('Error submitting form:', error); 
+            signupMessage.textContent = 'エラーが発生しました。インターネット接続を確認してください。';
+            signupMessage.style.color = 'red';
+          }
+          signupMessage.style.display = 'block';
+        });
       }
-  });
+    });
 
   </script>
 </body>
